@@ -1,17 +1,47 @@
 #include <iostream>
 #include <cmath>
 
+#define nl cout<<endl;
+
 using namespace std;
 
+//Strutura da matriz OD
+struct TabOD{
+	//dimensão da matriz
+	const static int dim=4;
+	//matrizes base
+	float tabOD_O[dim][dim] = {
+			{0,10,15,12},
+			{13,0,23,14},
+			{31,43,0,11},
+			{19,32,18,0}
+		};
+	float tabViagPre[2][dim]={0};
+	float tabOD_I[dim][dim]={0};
+	float tabViagFut[2][dim] = {
+		{80,70,100,90},
+		{120,90,70,60}
+	};
+	//matriz das proporções
+	float tabProp[2][dim]={0};
+	//matrizes para o metodo fratar
+	float tabVPProp[2][dim]={0};
+	float tabFrat[2][dim]={0};
+
+	int prec;
+};
+
 //Declaracao das subrotinas uteis
-void mostMatrix(float*, int, int);
-void mostMat2D(float*, int);
+void MostMatrix(float*, int, int);
+void MostMat2D(float*, int);
+void InitTab(TabOD*);
+void ShowTab(TabOD*);
 
 //Declaracao das subrotinas dos metodos
-void metUni(float*, float*, float*, float, float, int);
-void metMedio(float*, float*, float*, int, int);
-void metDet(float*, float*, float*, float, float, int, int);
-void metFrat(float*, float*, float*, float, float, int d, int p);
+void MetUni(float*, float*, float*, float, float, int);
+void MetMedio(float*, float*, float*, int, int);
+void MetDet(float*, float*, float*, float, float, int, int);
+void MetFrat(float*, float*, float*, float, float, int d, int p);
 
 //Variavel Global - Controlador de loop
 int i=0, j=0;
@@ -20,7 +50,6 @@ float aux[2]={0};
 int main(){
 	//Dimençao Matriz
 	int dim=4;
-	
 	//Declaracao e inicializacao de matrizes
 	float 
 	//Matrizes Base (hardcoding)
@@ -89,39 +118,57 @@ int main(){
 	};
 
 	cout<<"DISPLAY MATRIZ ORIGINAL"<<endl;
-	mostMatrix(&matrizOriginal[0][0], dim, dim);
+	MostMatrix(&matrizOriginal[0][0], dim, dim);
 
 	cout<<"DISPLAY MATRIZ AUXILIAR"<<endl;
-	mostMatrix(&matAux[0][0],dim,dim);
+	MostMatrix(&matAux[0][0],dim,dim);
 
 	cout<<"DISPLAY MATRIZ TOTAIS"<<endl;
-	mostMat2D(&matTot[0][0], dim);
+	MostMat2D(&matTot[0][0], dim);
 
 	cout<<"DISPLAY MATRIZ TOTAIS FUTURAS"<<endl;
-	mostMat2D(&matFutTot[0][0],dim);
+	MostMat2D(&matFutTot[0][0],dim);
 
 	cout<<"DISPLAY MATRIZ PROPORCAO"<<endl;
-	mostMat2D(&matProp[0][0], dim);
+	MostMat2D(&matProp[0][0], dim);
 
 	cout<<"total de viagens presentes = "<<totViagensPresente<<endl;
 	cout<<"total de viagens futuras = "<<totViagensFuturas<<endl;				
 	cout<<"Percentual de acerto = "<<abs(matProp[0][0]-1)*100<<"%"<<endl;
-
+	nl
+	nl
+	nl
+	nl
+	nl
+	nl
+	nl
+	nl
+	TabOD matrizOD;
+	InitTab(&matrizOD);
+	ShowTab(&matrizOD);
+	nl
+	nl
+	nl
+	nl
+	nl
+	nl
+	nl
+	nl
 	switch(opcao){
 		case 0:
-			metUni(&matAux[0][0], &matFutTot[0][0], &matProp[0][0], totViagensFuturas, totViagensPresente, dim);
+			MetUni(&matAux[0][0], &matFutTot[0][0], &matProp[0][0], totViagensFuturas, totViagensPresente, dim);
 			break;
 
 		case 1:
-			metMedio(&matAux[0][0], &matFutTot[0][0], &matProp[0][0], dim, prec);
+			MetMedio(&matAux[0][0], &matFutTot[0][0], &matProp[0][0], dim, prec);
 			break;
 
 		case 2:
-			metDet(&matAux[0][0], &matFutTot[0][0], &matProp[0][0], totViagensFuturas, totViagensPresente, dim, prec);			
+			MetDet(&matAux[0][0], &matFutTot[0][0], &matProp[0][0], totViagensFuturas, totViagensPresente, dim, prec);			
 			break;
 
 		case 3:
-			metFrat(&matAux[0][0], &matFutTot[0][0], &matProp[0][0], totViagensFuturas, totViagensPresente, dim, prec);
+			MetFrat(&matAux[0][0], &matFutTot[0][0], &matProp[0][0], totViagensFuturas, totViagensPresente, dim, prec);
 			break;
 
 		default:
@@ -138,7 +185,7 @@ int main(){
 //	DEFINICAO DAS SUB-ROTINAS	//
 //	PRINCIPAIS					//
 
-void metUni(float* matA, float* matTF, float* matP, float totViaFut, float totViaPres, int d){
+void MetUni(float* matA, float* matTF, float* matP, float totViaFut, float totViaPres, int d){
 	cout<<"//\t\t\t\t//\n//\tINICIO\t\t\t//\n//\tMETODO UNIFORME\t\t//\n//\t\t\t\t//"<<endl<<endl;
 	float matT[2][d];
 	
@@ -190,7 +237,7 @@ void metUni(float* matA, float* matTF, float* matP, float totViaFut, float totVi
 	cout<<"Percentual de acerto = "<<abs(*matP-1)*100<<"%"<<endl;
 }
 
-void metMedio(float* matA, float* matTF, float* matP, int d, int p){
+void MetMedio(float* matA, float* matTF, float* matP, int d, int p){
 	float matT[2][d];
 	do{
 
@@ -245,7 +292,7 @@ void metMedio(float* matA, float* matTF, float* matP, int d, int p){
 	}while((abs(*matP-1)*100)>p);
 }
 
-void metDet(float* matA, float* matTF, float* matP, float totViaFut, float totViaPres, int d, int p){
+void MetDet(float* matA, float* matTF, float* matP, float totViaFut, float totViaPres, int d, int p){
 	float matT[2][d];
 
 	do{
@@ -326,7 +373,7 @@ void metDet(float* matA, float* matTF, float* matP, float totViaFut, float totVi
 	}while((abs(*matP-1)*100)>p);
 }
 
-void metFrat(float* matA, float* matTF, float* matP, float totViaFut, float totViaPres, int d, int p){
+void MetFrat(float* matA, float* matTF, float* matP, float totViaFut, float totViaPres, int d, int p){
 	//Matriz Fratar
 	float matFrat[2][d]={0}, matTotProp[2][d]={0}, matT[2][d];
 
@@ -499,9 +546,68 @@ void metFrat(float* matA, float* matTF, float* matP, float totViaFut, float totV
 
 //								//
 //	DEFINICAO DAS SUB-ROTINAS	//
+//	INIT STRUCT TABABELA		//
+
+void InitTab(TabOD* tabela){
+	//tabelas basicas
+	for(i=0;i<tabela->dim;i++){
+		for(j=0;j<tabela->dim;j++){
+			tabela->tabOD_I[i][j]=tabela->tabOD_O[i][j];
+			aux[0]+=tabela->tabOD_O[i][j];
+			aux[1]+=tabela->tabOD_O[j][i];
+		};
+
+		tabela->tabViagPre[0][i]=aux[0];
+		tabela->tabViagPre[1][i]=aux[1];
+
+		tabela->tabProp[0][i]=(tabela->tabViagFut[0][i])/(tabela->tabViagPre[0][i]);
+		tabela->tabProp[1][i]=(tabela->tabViagFut[1][i])/(tabela->tabViagPre[1][i]);
+		aux[0]=aux[1]=0;
+	};
+	//tabelas fratar
+	for(i=0;i<tabela->dim;i++){
+		for(j=0;j<tabela->dim;j++){
+			aux[0]+=(tabela->tabOD_I[i][j])*(tabela->tabProp[1][j]);
+			aux[1]+=(tabela->tabOD_I[j][i])*(tabela->tabProp[0][j]);
+		};
+		tabela->tabVPProp[0][i]=aux[0];
+		tabela->tabVPProp[1][i]=aux[1];
+
+		tabela->tabFrat[0][j]=(tabela->tabViagPre[0][j])/(tabela->tabVPProp[0][j]);
+		tabela->tabFrat[1][j]=(tabela->tabViagPre[1][j])/(tabela->tabVPProp[1][j]);
+		aux[0]=aux[1]=0;
+	};
+}
+
+void ShowTab(TabOD* tabela){
+	cout<<"Tabela OD inicial";nl
+	MostMatrix(&tabela->tabOD_O[0][0], tabela->dim, tabela->dim);nl
+
+	cout<<"Tabela OD final";nl
+	MostMatrix(&tabela->tabOD_I[0][0], tabela->dim, tabela->dim);nl
+
+	cout<<"Tabela viagens Presente";nl
+	MostMat2D(&tabela->tabViagPre[0][0], tabela->dim);nl
+
+	cout<<"Tabela Viagens Futuras";nl
+	MostMat2D(&tabela->tabViagFut[0][0], tabela->dim);nl
+
+	cout<<"Tabela das Proporções";nl
+	MostMat2D(&tabela->tabProp[0][0], tabela->dim);nl
+
+	cout<<"Tabela Viagem Presente Pesada";nl
+	MostMat2D(&tabela->tabVPProp[0][0], tabela->dim);nl
+
+	cout<<"Tabela Fratar";nl
+	MostMat2D(&tabela->tabFrat[0][0], tabela->dim);nl
+
+}
+
+//								//
+//	DEFINICAO DAS SUB-ROTINAS	//
 //	AUXILIARES					//
 
-void mostMatrix(float* mat, int lin, int col){
+void MostMatrix(float* mat, int lin, int col){
 	for(i=0; i<lin;i++ ){
 		for(j=0; j<col;j++){
 			cout<<*(mat+i*col+j)<<"\t";
@@ -511,12 +617,12 @@ void mostMatrix(float* mat, int lin, int col){
 	cout<<endl;
 }
 
-void mostMat2D(float* mat, int lin){
+void MostMat2D(float* mat, int col){
 	for(i=0;i<2;i++){
 		if(i==0) cout<<"SAIDA\t:";
 		else cout<<"ENTRADA\t:";
-		for(j=0;j<lin;j++){
-			cout<<*(mat+i*2+j)<<"\t";
+		for(j=0;j<col;j++){
+			cout<<*(mat+i*col+j)<<"\t";
 		};
 		cout<<endl;
 	}
