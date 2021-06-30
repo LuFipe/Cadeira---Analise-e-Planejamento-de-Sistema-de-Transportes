@@ -28,7 +28,8 @@ struct TabOD{
 	float tabVPProp[2][dim]={0};
 	float tabFrat[2][dim]={0};
 
-	int prec;
+	int prec=5;
+	float totViagPre=0, totViagFut=0;
 };
 
 //Declaracao das subrotinas uteis
@@ -38,7 +39,7 @@ void InitTab(TabOD*);
 void ShowTab(TabOD*);
 
 //Declaracao das subrotinas dos metodos
-void MetUni(float*, float*, float*, float, float, int);
+void MetUni(float*, float*, float*, float*, float, float, int);
 void MetMedio(float*, float*, float*, int, int);
 void MetDet(float*, float*, float*, float, float, int, int);
 void MetFrat(float*, float*, float*, float, float, int d, int p);
@@ -78,7 +79,7 @@ int main(){
 
 	//Declaraçao de variaveis uteis
 	float totViagensPresente=0, totViagensFuturas=0, prec=5;
-	int opcao=3;
+	int opcao=0;
 
 	
 	//						//
@@ -156,7 +157,7 @@ int main(){
 	nl
 	switch(opcao){
 		case 0:
-			MetUni(&matAux[0][0], &matFutTot[0][0], &matProp[0][0], totViagensFuturas, totViagensPresente, dim);
+			MetUni(&matrizOD.tabOD_I[0][0], &matrizOD.tabViagFut[0][0], &matrizOD.tabProp[0][0], &matrizOD.tabViagPre[0][0] ,matrizOD.totViagFut, matrizOD.totViagPre, matrizOD.dim);
 			break;
 
 		case 1:
@@ -185,20 +186,18 @@ int main(){
 //	DEFINICAO DAS SUB-ROTINAS	//
 //	PRINCIPAIS					//
 
-void MetUni(float* matA, float* matTF, float* matP, float totViaFut, float totViaPres, int d){
-	cout<<"//\t\t\t\t//\n//\tINICIO\t\t\t//\n//\tMETODO UNIFORME\t\t//\n//\t\t\t\t//"<<endl<<endl;
-	float matT[2][d];
+void MetUni(float* matA, float* matTF, float* matP,float* matT ,float totViaFut, float totViaPres, int d){
+	cout<<"//\t\t\t\t//\n//\tINICIO\t\t\t//\n//\tMETODO UNIFORME\t\t//\n//\t\t\t\t//"<<endl<<endl;	
 	
 	for(i=0;i<d;i++){
 		for(j=0;j<d;j++){
-			*(matA + i*d + j)*=totViaFut/totViaPres;
+			(*(matA + i*d + j))*=(totViaFut/totViaPres);
 		};
 	};
 
-	cout<<"DISPLAY MATRIZ Auxiliar"<<endl;
+	cout<<"DISPLAY MATRIZ FUTURA"<<endl;
 	for(i=0; i<d;i++ ){
 		for(j=0; j<d;j++){
-
 			cout<<*(matA + i*d + j)<<"\t";
 		};
 		cout<<endl;
@@ -211,21 +210,21 @@ void MetUni(float* matA, float* matTF, float* matP, float totViaFut, float totVi
 			aux[0]+=*(matA + i*d + j); //soma na linha
 			aux[1]+=*(matA + j*d + i); //soma na coluna
 		};
-		matT[0][i]=aux[0];
-		matT[1][i]=aux[1];
+		*(matT+0*d+i)=aux[0];
+		*(matT+1*d+i)=aux[1];
 
 		aux[0]=aux[1]=0;
 	};
 	cout<<"DISPLAY MATRIZ TOTAIS"<<endl<<"SAIDAS \t"<<"ENTRADAS"<<endl;
 	for(j=0;j<d;j++){
-		cout<<matT[0][j]<<"\t"<<matT[1][j]<<endl;
+		cout<<*(matT+0*d+j)<<"\t"<<*(matT+1*d+j)<<endl;
 	};
 	cout<<endl;
 
 	//matProp
 	for(i=0;i<2;i++){
 		for(j=0;j<d;j++){
-				*(matP +i*d+j) = abs((*(matTF+i*d+j))/matT[i][j]);
+				*(matP +i*d+j) = abs((*(matTF+i*d+j))/(*(matT+i*d+j)));
 		};
 	};
 	cout<<"DISPLAY MATRIZ PROPORCAO"<<endl<<"SAIDAS \t\t"<<"ENTRADAS"<<endl;
@@ -560,6 +559,9 @@ void InitTab(TabOD* tabela){
 		tabela->tabViagPre[0][i]=aux[0];
 		tabela->tabViagPre[1][i]=aux[1];
 
+		tabela->totViagPre += tabela->tabViagPre[0][i];
+		tabela->totViagFut += tabela->tabViagFut[0][i];
+
 		tabela->tabProp[0][i]=(tabela->tabViagFut[0][i])/(tabela->tabViagPre[0][i]);
 		tabela->tabProp[1][i]=(tabela->tabViagFut[1][i])/(tabela->tabViagPre[1][i]);
 		aux[0]=aux[1]=0;
@@ -573,10 +575,10 @@ void InitTab(TabOD* tabela){
 		tabela->tabVPProp[0][i]=aux[0];
 		tabela->tabVPProp[1][i]=aux[1];
 
-		tabela->tabFrat[0][j]=(tabela->tabViagPre[0][j])/(tabela->tabVPProp[0][j]);
-		tabela->tabFrat[1][j]=(tabela->tabViagPre[1][j])/(tabela->tabVPProp[1][j]);
+		tabela->tabFrat[0][i]=(tabela->tabViagPre[0][i])/(tabela->tabVPProp[0][i]);
+		tabela->tabFrat[1][i]=(tabela->tabViagPre[1][i])/(tabela->tabVPProp[1][i]);
 		aux[0]=aux[1]=0;
-	};
+	};	
 }
 
 void ShowTab(TabOD* tabela){
