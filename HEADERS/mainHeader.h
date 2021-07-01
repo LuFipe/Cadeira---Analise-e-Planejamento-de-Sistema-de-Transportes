@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <cmath>
+#include <fstream>
 
 #define nl cout<<endl;
 
@@ -26,8 +27,8 @@ struct TabOD{
 	float* tabVPProp[2];
 	float* tabFrat[2];
 
-	int prec_I=5;
-	float prec_O=0;
+	int prec_I=1;
+	float prec_O=1;
 	float totViagPre=0, totViagFut=0;
 };
 
@@ -45,5 +46,9 @@ void MostMat2D(float*[], int);
 void InitTab(TabOD*);
 void ShowTab(TabOD*);
 float CalcPreci(float* [], int);
+
+//Prototipagem Funções de Arquivos
+void DefDim(ifstream*, string, int&, int&);
+void CarrFile(ifstream*, string, float**, int, int);
 
 #endif

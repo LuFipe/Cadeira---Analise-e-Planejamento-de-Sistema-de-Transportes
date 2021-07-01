@@ -35,9 +35,11 @@ void MetUni(TabOD* tabela){
 
 void MetMedio(TabOD* tabela){
 	int i=0, j=0;
+	int interacao=0;
 	float aux[2]={0};
 	do{
-		cout<<"//\t\t\t\t//\n//\tINICIO\t\t\t//\n//\tCRESCIMENTO MEDIO\t\t//\n//\t\t\t\t//"<<endl<<endl;
+		cout<<"//\t\t\t\t//\n//\tINICIO\t\t\t//\n//\tCRESCIMENTO MEDIO\t//\n//\t\t\t\t//"<<endl<<endl;
+		nl
 		for(i=0;i<tabela->dim;i++){
 			for(j=0;j<tabela->dim;j++){
 				tabela->tabOD_I[i][j]*=(tabela->tabProp[0][i]+tabela->tabProp[1][j])/2;
@@ -63,11 +65,18 @@ void MetMedio(TabOD* tabela){
 			};
 		};
 		tabela->prec_O = CalcPreci(tabela->tabProp, tabela->dim);
+		
+		interacao++;
+		cout<<"Essa é a interação numero :"<<interacao;
+		nl
+		nl
+		ShowTab(tabela);
 	}while(tabela->prec_O>tabela->prec_I);
 }
 
 void MetDet(TabOD* tabela){
 	int i=0, j=0;
+	int interacao=0;
 	float aux[2]={0};
 	do{
 		cout<<"//\t\t\t\t//\n//\tINICIO\t\t\t//\n//\tMETODO DETROIT\t\t//\n//\t\t\t\t//"<<endl<<endl;
@@ -99,11 +108,19 @@ void MetDet(TabOD* tabela){
 			};
 		};
 		tabela->prec_O = CalcPreci(tabela->tabProp, tabela->dim);
+
+		interacao++;
+		cout<<"Essa é a interação numero :"<<interacao;
+		nl
+		nl
+		ShowTab(tabela);
+
 	}while(tabela->prec_O>tabela->prec_I);
 }
 
 void MetFrat(TabOD* tabela){
 	int i=0, j=0;
+	int interacao=0;
 	float aux[2]={0};
 	//Matriz Fratar
 	for(i=0; i<tabela->dim;i++ ){
@@ -183,5 +200,12 @@ void MetFrat(TabOD* tabela){
 			};
 		};
 		tabela->prec_O = CalcPreci(tabela->tabProp, tabela->dim);
+
+		interacao++;
+		cout<<"Essa é a interação numero :"<<interacao;
+		nl
+		nl
+		ShowTab(tabela);
+
 	}while(tabela->prec_O>tabela->prec_I);
 }

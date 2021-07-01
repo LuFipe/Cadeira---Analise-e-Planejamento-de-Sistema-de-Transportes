@@ -12,3 +12,4 @@ O seguinte repositório é para um programa que resolva esses problemas e també
 O Programa, para efeito de estudo, é dividido em diversas partes com o versionamento para uma metodologia de desenvolvimento de programa
 1- Hardcoding de todo o programa em um único arquivo
 2- Modulaçao para organizaçõo de código
+3- Leitura de Arquivo

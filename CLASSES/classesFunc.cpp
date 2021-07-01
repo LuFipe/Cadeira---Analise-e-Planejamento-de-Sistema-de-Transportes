@@ -2,7 +2,7 @@
 
 //Definiçao de SubRotinas da Estrutura
 float CalcPreci(float* mat[], int d){
-	cout<<"//ENTRANDO NO CALCULO DA PRECISAO//\n";
+	//cout<<"//ENTRANDO NO CALCULO DA PRECISAO//\n";
 	int i=0, j=0;
 	float aux[2]={0};
 	float p;
@@ -14,14 +14,30 @@ float CalcPreci(float* mat[], int d){
 	};
 	p=100 * aux[0];
 	aux[0]=0;
-	cout<<"//ENTRANDO NO CALCULO DA PRECISAO//\n";
+	//cout<<"//SAINDO NO CALCULO DA PRECISAO//\n";
 	return p;
 }
 void InitTab(TabOD* tabela){
+	//Variaveis de Controle
 	int i=0, j=0;
 	float aux[2]={0};
+
+	//Variaveis para controle de Arquivo
+	ifstream arquivo;
+	int linha, coluna;
+	float** matAux;
+	string camArq = "./FILES/arquivo.txt";
 	
-	//Alocação dinamica de matrix
+	//Definição da dimensão da matriz
+	DefDim(&arquivo, camArq,linha, coluna);
+	tabela->dim = coluna;
+
+	//Alocação dinamica de matrizes
+	matAux = new float*[linha];			//							//
+	for(i=0; i<linha;i++){				//Alocação dinamica da		//
+		matAux[i] = new float[coluna];	//Matriz Auxiliar			//
+	}									//							//
+
 	tabela->tabOD_O = new float*[tabela->dim];
 	tabela->tabOD_I = new float*[tabela->dim];
 	for(i=0; i<tabela->dim;i++){
@@ -39,15 +55,15 @@ void InitTab(TabOD* tabela){
 	//input das matrizes iniciais
 	//tabOD_O
 	//tabViaFut
+	CarrFile(&arquivo, camArq, matAux, linha, coluna);
 	for(i=0;i<tabela->dim;i++){
 		for(j=0;j<tabela->dim;j++){
-			cout<<"Entre com o elemento ["<<i<<"]["<<j<<"]: ";
-			cin>>tabela->tabOD_O[i][j];
+			tabela->tabOD_O[i][j] = matAux[i][j];
 		};
 	};
 	for(i=0;i<tabela->dim;i++){
-		cout<<"Entre com as viagens que saem de: "<<i<<" :";cin>>tabela->tabViagFut[0][i];
-		cout<<"Entre com as viagens que chegam a: "<<i<<" :";cin>>tabela->tabViagFut[1][i];nl
+		tabela->tabViagFut[0][i] = matAux[tabela->dim + 0][i];
+		tabela->tabViagFut[1][i] = matAux[tabela->dim + 1][i];
 	}
 
 
@@ -108,4 +124,6 @@ void ShowTab(TabOD* tabela){
 
 	cout<<"Precisão da Tabela:";nl
 	cout<<tabela->prec_O;nl
+	nl
+	nl
 }
