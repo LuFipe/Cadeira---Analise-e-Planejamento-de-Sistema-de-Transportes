@@ -12,3 +12,9 @@ subRotine_1.o: ./MODULES/subRotine_1.cpp ./HEADERS/mainHeader.h
 
 subRotine_2.o: ./MODULES/subRotine_2.cpp ./HEADERS/mainHeader.h
 	g++ -c ./MODULES/subRotine_2.cpp -o subRotine_2.o
+
+exec:
+	./MatrizFutura
+
+limpar:
+	rm main.o classesFunc.o subRotine_1.o subRotine_2.o
