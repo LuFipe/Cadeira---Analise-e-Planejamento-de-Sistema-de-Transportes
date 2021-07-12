@@ -21,3 +21,5 @@ exec:
 
 limpar:
 	rm main.o classesFunc.o subRotine_1.o subRotine_2.o InputMatrix.o
+
+refazer: limpar main exec

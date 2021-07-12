@@ -27,6 +27,9 @@ struct TabOD{
 	float* tabVPProp[2];
 	float* tabFrat[2];
 
+	//matriz para o metodo gravitacional
+	float** tabRes;
+
 	int prec_I=1;
 	float prec_O=1;
 	float totViagPre=0, totViagFut=0;
@@ -37,6 +40,8 @@ void MetUni(TabOD*);
 void MetMedio(TabOD*);
 void MetDet(TabOD*);
 void MetFrat(TabOD*);
+void MetGravi(TabOD*);
+float LoopGravi(TabOD*, float, bool );
 
 //Prototipagem SubRotinas 2
 void MostMatrix(float**, int, int);

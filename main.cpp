@@ -8,28 +8,37 @@ int main(){
 	cin>>matrizOD.prec_I;
 
 	InitTab(&matrizOD);
-	ShowTab(&matrizOD);
+	//ShowTab(&matrizOD);
 
-	cout<<"Escolha o Metodo:\n1-Metodo do Crescimento Uniforme\n2-Metodo do Crescimento Medio\n3-Metodo de Detroit\n4-Metodo de Fratar\n";
+	cout<<"Escolha o Metodo:\n1-Metodo do Crescimento Uniforme\n2-Metodo do Crescimento Medio\n3-Metodo de Detroit\n4-Metodo de Fratar\n5-Metodo Gravitacional\n";
 	cin>>opcao;
 	opcao--;
 	nl
 	nl
 	switch(opcao){
 		case 0:
+			cout<<"Voce escolheu: Unitario";nl
 			MetUni(&matrizOD);
 			ShowTab(&matrizOD);
 			break;
 		case 1:
+			cout<<"Voce escolheu: Medio";nl
 			MetMedio(&matrizOD);
 			//ShowTab(&matrizOD);
 			break;
 		case 2:
+			cout<<"Voce escolheu: Detroit";nl
 			MetDet(&matrizOD);
 			//ShowTab(&matrizOD);			
 			break;
 		case 3:
+			cout<<"Voce escolheu: Fratar";nl
 			MetFrat(&matrizOD);
+			//ShowTab(&matrizOD);
+			break;
+		case 4:
+			cout<<"Voce escolheu: Gravitacional";nl
+			MetGravi(&matrizOD);
 			//ShowTab(&matrizOD);
 			break;
 		default:

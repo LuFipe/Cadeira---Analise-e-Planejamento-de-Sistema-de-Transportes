@@ -26,10 +26,11 @@ void InitTab(TabOD* tabela){
 	ifstream arquivo;
 	int linha, coluna;
 	float** matAux;
-	string camArq = "./FILES/arquivo.txt";
+	string camMAT_OD = "./FILES/Matrix.txt";
+	string camMAT_Res = "./FILES/MatrixRes.txt";
 	
 	//Definição da dimensão da matriz
-	DefDim(&arquivo, camArq,linha, coluna);
+	DefDim(&arquivo, camMAT_OD,linha, coluna);
 	tabela->dim = coluna;
 
 	//Alocação dinamica de matrizes
@@ -40,9 +41,11 @@ void InitTab(TabOD* tabela){
 
 	tabela->tabOD_O = new float*[tabela->dim];
 	tabela->tabOD_I = new float*[tabela->dim];
+	tabela->tabRes = new float*[tabela->dim];
 	for(i=0; i<tabela->dim;i++){
 		tabela->tabOD_O[i] = new float[tabela->dim];
 		tabela->tabOD_I[i] = new float[tabela->dim];
+		tabela->tabRes[i] = new float[tabela->dim];
 	};
 	for(i=0;i<2;i++){
 		tabela->tabViagPre[i] = new float[tabela->dim];
@@ -55,7 +58,8 @@ void InitTab(TabOD* tabela){
 	//input das matrizes iniciais
 	//tabOD_O
 	//tabViaFut
-	CarrFile(&arquivo, camArq, matAux, linha, coluna);
+	//MatRes
+	CarrFile(&arquivo, camMAT_OD, matAux, linha, coluna);
 	for(i=0;i<tabela->dim;i++){
 		for(j=0;j<tabela->dim;j++){
 			tabela->tabOD_O[i][j] = matAux[i][j];
@@ -65,8 +69,7 @@ void InitTab(TabOD* tabela){
 		tabela->tabViagFut[0][i] = matAux[tabela->dim + 0][i];
 		tabela->tabViagFut[1][i] = matAux[tabela->dim + 1][i];
 	}
-
-
+	
 	//tabelas basicas
 	for(i=0;i<tabela->dim;i++){
 		for(j=0;j<tabela->dim;j++){
@@ -98,6 +101,15 @@ void InitTab(TabOD* tabela){
 		tabela->tabFrat[1][i]=(tabela->tabViagPre[1][i])/(tabela->tabVPProp[1][i]);
 		aux[0]=aux[1]=0;
 	};
+
+	//Matrix Resistencia
+	CarrFile(&arquivo, camMAT_Res, matAux, tabela->dim, tabela->dim);
+	for(i=0;i<tabela->dim;i++){
+		for(j=0;j<tabela->dim;j++){
+			tabela->tabRes[i][j] = matAux[i][j];
+		};
+	};
+
 	tabela->prec_O = CalcPreci(tabela->tabProp, tabela->dim);
 }
 void ShowTab(TabOD* tabela){
